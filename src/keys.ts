@@ -7,6 +7,7 @@ export default{
           user:'culturap_Felipe', 
           password:']wq-8xIFvf26',
           database:'culturap_cultura_para_todos' 
+          //
           
           //datos de conexion a localhost
           
