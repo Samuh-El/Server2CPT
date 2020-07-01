@@ -39,6 +39,8 @@ class AppRoutes {
 
           this.router.post('/signin', appController.signin);
           this.router.post('/send-email-contact',appController.sendEmailContact);
+          this.router.get('/get-info-espectaculos', appController.getInfoEspectaculos);
+          
           //rutas de productos chile en caso que se necesite una refencia
           //productos chile
           // this.router.get('/list-all', appController.list);
