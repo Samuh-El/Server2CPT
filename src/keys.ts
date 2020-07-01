@@ -3,7 +3,7 @@ export default{
 
           //datos de conexion a db
 
-          host:'culturaparatodos.cl',
+          host:'190.107.177.34',
           user:'culturap_Felipe', 
           password:']wq-8xIFvf26',
           database:'culturap_cultura_para_todos' 
