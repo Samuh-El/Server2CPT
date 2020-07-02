@@ -101,7 +101,6 @@ class AppController {
     }
     getInfoEspectaculos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            return res.json('entre en la ruta !!');
             console.log('getInfoEspectaculos en serverdsad');
             const data = yield database_1.default.query('SELECT e.nombreEspectaculo as nombre,e.descripcionEspectaculo as descripcionCompleta,e.desdeHorario as horaInicio,e.hastaHorario as horaTermino,DATE_FORMAT(e.fechaEspectaculo,\'%d/%m/%Y\') as fecha,e.descripcionResumida,e.valor as precio,e.rutaImagenBanner as rutaBanner,e.rutaImagenAfiche as rutaAfiche,t.nombreTipo as tipoEspectaculo,o.nombreOrganizador as organizador,a.nombreArtistas as artista FROM `espectaculo` e INNER JOIN `tipoespectaculo` t ON e.tipoEspectaculo_idTipoEspectaculo = t.idTipoEspectaculo INNER JOIN `organizador` o ON e.organizador_idOrganizador = o.idOrganizador INNER JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas WHERE e.visible = 1');
             if (data.length > 0) {
