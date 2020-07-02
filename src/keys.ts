@@ -6,8 +6,7 @@ export default{
           host:'190.107.177.34',
           user:'culturap_Felipe', 
           password:']wq-8xIFvf26',
-          database:'culturap_cultura_para_todos' 
-          //
+          database:'culturap_cultura_para_todos',  
           
           //datos de conexion a localhost
           
@@ -15,6 +14,6 @@ export default{
           // user:'root', 
           // password:'',
           // database:'cultura_para_todos',
-     }   
+     }    
         
 }
