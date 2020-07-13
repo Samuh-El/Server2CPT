@@ -38,6 +38,7 @@ class AppRoutes {
 
 
           this.router.post('/signin', appController.signin);
+          this.router.post('/signin-usuario', appController.signinUsuario);
           this.router.post('/send-email-contact',appController.sendEmailContact);
           this.router.get('/get-info-espectaculos', appController.getInfoEspectaculos);
           

@@ -65,6 +65,31 @@ class AppController {
             }
         });
     }
+    signinUsuario(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('signinUsuario en server');
+            const { run, password } = req.body;
+            console.log(run);
+            console.log(password);
+            var Productor = {
+                idProductor: '',
+                admin: ''
+            };
+            const productor = yield database_1.default.query('SELECT idProductor,admin FROM `productor` WHERE runProductor=\'' + run + '\' AND claveProductor=\'' + password + '\'');
+            console.log('productor= ' + productor);
+            if (productor.length > 0) {
+                Productor = productor[0];
+                console.log('id= ' + Productor.idProductor);
+                console.log('admin?= ' + Productor.admin);
+                const user = jsonwebtoken_1.default.sign({ _id: Productor.idProductor }, 'secretkey');
+                return res.status(200).json({ Productor, user });
+            }
+            else {
+                console.log('datos no coinciden');
+                return res.status(401).send("run o password incorrecta");
+            }
+        });
+    }
     sendEmailContact(req, res) {
         var contentHTML;
         const { nombre, email, celular, mensaje } = req.body;
@@ -101,13 +126,39 @@ class AppController {
     }
     getInfoEspectaculos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('getInfoEspectaculos en serverdsad');
-            const data = yield database_1.default.query('SELECT e.nombreEspectaculo as nombre,e.descripcionEspectaculo as descripcionCompleta,e.desdeHorario as horaInicio,e.hastaHorario as horaTermino,DATE_FORMAT(e.fechaEspectaculo,\'%d/%m/%Y\') as fecha,e.descripcionResumida,e.valor as precio,e.rutaImagenBanner as rutaBanner,e.rutaImagenAfiche as rutaAfiche,t.nombreTipo as tipoEspectaculo,o.nombreOrganizador as organizador,a.nombreArtistas as artista FROM `espectaculo` e INNER JOIN `tipoespectaculo` t ON e.tipoEspectaculo_idTipoEspectaculo = t.idTipoEspectaculo INNER JOIN `organizador` o ON e.organizador_idOrganizador = o.idOrganizador INNER JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas WHERE e.visible = 1');
+            console.log('getInfoEspectaculos en server');
+            const data = yield database_1.default.query('SELECT e.idEspectaculo as numeroEspectaculo, e.nombreEspectaculo as nombre,e.descripcionEspectaculo as descripcionCompleta,e.desdeHorario as horaInicio,e.hastaHorario as horaTermino,e.fechaEspectaculo as fecha,e.descripcionResumida,e.valor as precio,e.rutaImagenBanner as rutaBanner,e.rutaImagenAfiche as rutaAfiche,t.nombreTipo as tipoEspectaculo,p.nombreProductor as productor,a.nombreArtistas as artista FROM `espectaculo` e INNER JOIN `tipoespectaculo` t ON e.tipoEspectaculo_idTipoEspectaculo = t.idTipoEspectaculo INNER JOIN `productor` p ON e.productor_idProductor = p.idProductor INNER JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas WHERE e.visible = 1');
             if (data.length > 0) {
                 return res.json(data);
             }
             else {
                 return res.status(404).json({ text: "no retorna nada" });
+            }
+        });
+    }
+    getInfoAdministrador(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //retorna todos los eventos
+            console.log('getInfoAdministrador en server');
+            const data = yield database_1.default.query('SELECT e.rutaImagenAfiche as rutaImagen,e.nombreEspectaculo as nombreEvento,e.fechaEspectaculo as fechaEvento,e.desdeHorario as horaInicioEvento,e.hastaHorario as horaTerminoEvento,e.descripcionEspectaculo as descripcionEvento,p.nombreProductor as productor,a.nombreArtistas as artista,sum(t.valorTransaccion) as valor,COUNT(t.idTransaccion) as cantidad FROM `espectaculo` e inner JOIN `productor` p ON e.productor_idProductor = p.idProductor inner JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas inner join `transaccion` t ON e.idEspectaculo = t.espectaculo_idEspectaculo WHERE e.visible = 1 group by e.idEspectaculo');
+            if (data.length > 0) {
+                return res.json(data);
+            }
+            else {
+                return res.status(404).json({ text: "no existen eventos en db" });
+            }
+        });
+    }
+    getInfoProductor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //retorna los eventos asociados a este productor
+            console.log('getInfoProductor en server');
+            const data = yield database_1.default.query('SELECT e.rutaImagenAfiche as rutaImagen,e.nombreEspectaculo as nombreEvento,e.fechaEspectaculo as fechaEvento,e.desdeHorario as horaInicioEvento,e.hastaHorario as horaTerminoEvento,e.descripcionEspectaculo as descripcionEvento,p.nombreProductor as productor,a.nombreArtistas as artista,sum(t.valorTransaccion) as valor,COUNT(t.idTransaccion) as cantidad FROM `espectaculo` e inner JOIN `productor` p ON e.productor_idProductor = p.idProductor inner JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas inner join `transaccion` t ON e.idEspectaculo = t.espectaculo_idEspectaculo WHERE e.visible = 1 and p.idProductor = 1 group by e.idEspectaculo');
+            if (data.length > 0) {
+                return res.json(data);
+            }
+            else {
+                return res.status(404).json({ text: "productor no posee eventos" });
             }
         });
     }

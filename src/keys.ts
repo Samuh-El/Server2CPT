@@ -13,7 +13,7 @@ export default{
           // host:'localhost',
           // user:'root', 
           // password:'',
-          // database:'cultura_para_todos',
+          // database:'producto_cultura',
      }    
-        
+         
 }

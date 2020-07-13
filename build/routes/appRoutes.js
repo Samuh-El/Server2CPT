@@ -30,6 +30,7 @@ class AppRoutes {
         this.router.get('/list-horarios', appController_1.default.listHorarios);
         this.router.post('/guardar-compra-de-espectaculo', appController_1.default.guardarCompraEvento);
         this.router.post('/signin', appController_1.default.signin);
+        this.router.post('/signin-usuario', appController_1.default.signinUsuario);
         this.router.post('/send-email-contact', appController_1.default.sendEmailContact);
         this.router.get('/get-info-espectaculos', appController_1.default.getInfoEspectaculos);
         //rutas de productos chile en caso que se necesite una refencia
