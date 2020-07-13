@@ -62,7 +62,7 @@ class AppController {
                idProductor: '',
                admin:''
           }
-
+ 
           const productor = await pool.query('SELECT idProductor,admin FROM `productor` WHERE runProductor=\'' + run + '\' AND claveProductor=\'' + password + '\'')
           console.log('productor= '+productor)
           if (productor.length > 0) {
