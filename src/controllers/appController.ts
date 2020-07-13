@@ -131,23 +131,25 @@ class AppController {
      public async getInfoAdministrador(req: Request, res: Response) {
           //retorna todos los eventos
           console.log('getInfoAdministrador en server')
-          const data = await pool.query('SELECT e.rutaImagenAfiche as rutaImagen,e.nombreEspectaculo as nombreEvento,e.fechaEspectaculo as fechaEvento,e.desdeHorario as horaInicioEvento,e.hastaHorario as horaTerminoEvento,e.descripcionEspectaculo as descripcionEvento,p.nombreProductor as productor,a.nombreArtistas as artista,sum(t.valorTransaccion) as valor,COUNT(t.idTransaccion) as cantidad FROM `espectaculo` e inner JOIN `productor` p ON e.productor_idProductor = p.idProductor inner JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas inner join `transaccion` t ON e.idEspectaculo = t.espectaculo_idEspectaculo WHERE e.visible = 1 group by e.idEspectaculo');
+          const data = await pool.query('SELECT e.rutaImagenAfiche as rutaImagen,e.nombreEspectaculo as nombreEvento,e.fechaEspectaculo as fechaEvento,e.desdeHorario as horaInicioEvento,e.hastaHorario as horaTerminoEvento,e.descripcionEspectaculo as descripcionEvento,e.valor as valorEvento,p.nombreProductor as productor,a.nombreArtistas as artista,COALESCE(SUM(t.valorTransaccion),0)as totalVentas,COUNT(t.idTransaccion) as cantidadTicketsVendidos FROM `espectaculo` e inner JOIN `productor` p ON e.productor_idProductor = p.idProductor inner JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas left join `transaccion` t ON e.idEspectaculo = t.espectaculo_idEspectaculo WHERE e.visible = 1 group by e.idEspectaculo'); 
           if (data.length > 0) {
                return res.json(data);
           }else{
-               return res.status(404).json({ text: "no existen eventos en db" });
+               return res.status(401).json({ text: "no existen eventos en db" });
           }
            
      } 
 
      public async getInfoProductor(req: Request, res: Response) {
+          console.log('idProductor= '+req.params.id);
+          var idProductor= req.params.id
           //retorna los eventos asociados a este productor
           console.log('getInfoProductor en server')
-          const data = await pool.query('SELECT e.rutaImagenAfiche as rutaImagen,e.nombreEspectaculo as nombreEvento,e.fechaEspectaculo as fechaEvento,e.desdeHorario as horaInicioEvento,e.hastaHorario as horaTerminoEvento,e.descripcionEspectaculo as descripcionEvento,p.nombreProductor as productor,a.nombreArtistas as artista,sum(t.valorTransaccion) as valor,COUNT(t.idTransaccion) as cantidad FROM `espectaculo` e inner JOIN `productor` p ON e.productor_idProductor = p.idProductor inner JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas inner join `transaccion` t ON e.idEspectaculo = t.espectaculo_idEspectaculo WHERE e.visible = 1 and p.idProductor = 1 group by e.idEspectaculo');
+          const data = await pool.query('SELECT e.rutaImagenAfiche as rutaImagen,e.nombreEspectaculo as nombreEvento,e.fechaEspectaculo as fechaEvento,e.desdeHorario as horaInicioEvento,e.hastaHorario as horaTerminoEvento,e.descripcionEspectaculo as descripcionEvento,e.valor as valorEvento,p.nombreProductor as productor,a.nombreArtistas as artista,COALESCE(SUM(t.valorTransaccion),0)as totalVentas,COUNT(t.idTransaccion) as cantidadTicketsVendidos FROM `espectaculo` e inner JOIN `productor` p ON e.productor_idProductor = p.idProductor inner JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas left join `transaccion` t ON e.idEspectaculo = t.espectaculo_idEspectaculo WHERE e.visible = 1 and p.idProductor = '+idProductor+' group by e.idEspectaculo');
           if (data.length > 0) {
                return res.json(data);
           }else{
-               return res.status(404).json({ text: "productor no posee eventos" });
+               return res.status(401).json({ text: "productor no posee eventos" });
           }
           
      } 
