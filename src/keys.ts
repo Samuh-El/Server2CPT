@@ -7,13 +7,13 @@ export default{
           user:'producto_Felipe',  
           password:']wq-8xIFvf26',
           database:'producto_cultura',    
-          
+           
           //datos de conexion a localhost 
-          
+           
           // host:'localhost',
           // user:'root', 
           // password:'',
-          // database:'producto_cultura',
+          // database:'producto_cultura', 
      }    
          
 }
