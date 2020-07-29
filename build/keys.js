@@ -7,5 +7,5 @@ exports.default = {
         user: 'producto_Felipe',
         password: ']wq-8xIFvf26',
         database: 'producto_cultura',
-    }
+    } 
 };
