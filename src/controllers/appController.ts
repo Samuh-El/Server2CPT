@@ -31,24 +31,27 @@ class AppController {
 
      //metodos de practica
      public async signin(req: any, res: any): Promise<void> {
-          const { run, transaccion } = req.body;
-          console.log(run)
+          const { correo, transaccion,espectaculo } = req.body;
+          console.log(correo)
           console.log(transaccion)
+          console.log(espectaculo)
          
-
-          if(run=='x' && transaccion=="12345"){
-               console.log('esta bien')
-               const token = jwt.sign({ _id: transaccion }, 'secretkey', {
-                    expiresIn: "60000" // it will be expired after 10 hours
+          const datos = await pool.query('SELECT  v.enlaceVideo FROM `transaccion` t inner join `espectaculo` e ON t.espectaculo_idEspectaculo = e.idEspectaculo inner join `video` v ON e.idVideo = v.idVideo WHERE t.payer_email =\'' + correo + '\' AND t.codigoTransaccion =\'' + transaccion + '\' AND e.nombreEspectaculo =\'' + espectaculo + '\' AND e.visible =1')
+          
+          
+          if(datos.length > 0){
+               
+               console.log(datos[0].enlaceVideo)
+               const data=datos[0].enlaceVideo
+               const token = jwt.sign({ _id: (datos[0].enlaceVideo) }, 'secretkey', {
+                    expiresIn: "1d" // it will be expired after 10 hours
                     //expiresIn: "20d" // it will be expired after 20 days
                    //expiresIn: 120 // it will be expired after 120ms
              });
                //aqui el token puede tener mas opciones, como su tiempo de vida, cosa que tengo que modificar, para que calze con la hora de inicio y de termino de un espectaculo
-               return res.status(200).json({ token })
+               return res.status(200).json({ token,data })
           }else{
-               console.log('run es= '+run+' y no es x')
-               console.log('transaccion es= '+transaccion+' y no es 12345')
-               return res.status(418).send("correo o contraseña incorrecta") 
+               return res.status(401).send("correo o contraseña incorrecta") 
           }
      }
 
@@ -117,6 +120,8 @@ class AppController {
 
      public async getInfoEspectaculos(req: Request, res: Response) {
           
+          
+
           console.log('getInfoEspectaculos en server')
           const data = await pool.query('SELECT e.idEspectaculo as numeroEspectaculo,e.urlClipVideo, e.nombreEspectaculo as nombre,e.descripcionEspectaculo as descripcionCompleta,e.desdeHorario as horaInicio,e.hastaHorario as horaTermino,e.fechaEspectaculo as fecha,e.descripcionResumida,e.valor as precio,e.valorUSD as precioUSD,e.rutaImagenBanner as rutaBanner,e.rutaImagenAfiche as rutaAfiche,t.nombreTipo as tipoEspectaculo,p.nombreProductor as productor,a.nombreArtistas as artista FROM `espectaculo` e INNER JOIN `tipoespectaculo` t ON e.tipoEspectaculo_idTipoEspectaculo = t.idTipoEspectaculo INNER JOIN `productor` p ON e.productor_idProductor = p.idProductor INNER JOIN `artistas` a ON e.artistas_idArtistas = a.idArtistas WHERE e.visible = 1 order by e.idEspectaculo DESC');
           if (data.length > 0) {
