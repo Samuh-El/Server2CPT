@@ -36,9 +36,10 @@ class AppController {
           console.log(transaccion)
           console.log(espectaculo)
          
-          const datos = await pool.query('SELECT  v.enlaceVideo FROM `transaccion` t inner join `espectaculo` e ON t.espectaculo_idEspectaculo = e.idEspectaculo inner join `video` v ON e.idVideo = v.idVideo WHERE t.payer_email =\'' + correo + '\' AND t.codigoTransaccion =\'' + transaccion + '\' AND e.nombreEspectaculo =\'' + espectaculo + '\' AND e.visible =1')
+
+          const datos = await pool.query('SELECT  v.enlaceVideo FROM `transaccion` t inner join `espectaculo` e ON t.espectaculo_idEspectaculo = e.idEspectaculo inner join `video` v ON e.idVideo = v.idVideo WHERE (t.payer_email =\'' + correo + '\' AND t.codigoTransaccion =\'' + transaccion + '\' AND e.nombreEspectaculo =\'' + espectaculo + '\' AND e.visible =1 ) OR (t.payer_email =\'' + correo + '\' AND e.claveGenerica =\'' + transaccion + '\' AND e.nombreEspectaculo =\'' + espectaculo + '\' AND e.visible =1)')
           
-          
+           
           if(datos.length > 0){
                
                console.log(datos[0].enlaceVideo)
