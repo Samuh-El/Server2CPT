@@ -10,9 +10,9 @@ export default{
            
           //datos de conexion a localhost 
            
-          // host:'localhost',
+          // host:'localhost', 
           // user:'root', 
-          // password:'',
+          // password:'',   
           // database:'producto_cultura', 
      }    
          

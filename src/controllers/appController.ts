@@ -128,7 +128,8 @@ class AppController {
           if (data.length > 0) {
                return res.json(data);
           }else{
-               return res.status(404).json({ text: "no retorna nada" });
+               //return res.status(404).json({ text: "no retorna nada" });
+               return res.json(data);
           }
           
      } 
