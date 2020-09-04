@@ -135,6 +135,27 @@ class AppController {
      } 
 
 
+
+     public async getVideoPrueba(req: Request, res: Response) {
+          
+           
+
+          console.log('getVideoPrueba en server')
+          const data = await pool.query('SELECT linkvideo FROM `pantallaPruebas`');
+          if (data.length > 0) {
+               return res.json(data);
+          }else{
+               //return res.status(404).json({ text: "no retorna nada" });
+               return res.json(data);
+          }
+          
+     } 
+
+
+
+
+
+
      public async getInfoAdministrador(req: Request, res: Response) {
           //retorna todos los eventos
           console.log('getInfoAdministrador en server')

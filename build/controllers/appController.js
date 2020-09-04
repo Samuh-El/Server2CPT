@@ -138,6 +138,19 @@ class AppController {
             }
         });
     }
+    getVideoPrueba(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('getVideoPrueba en server');
+            const data = yield database_1.default.query('SELECT linkvideo FROM `pantallaPruebas`');
+            if (data.length > 0) {
+                return res.json(data);
+            }
+            else {
+                //return res.status(404).json({ text: "no retorna nada" });
+                return res.json(data);
+            }
+        });
+    }
     getInfoAdministrador(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             //retorna todos los eventos

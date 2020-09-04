@@ -33,6 +33,7 @@ class AppRoutes {
         this.router.post('/signin-usuario', appController_1.default.signinUsuario);
         this.router.post('/send-email-contact', appController_1.default.sendEmailContact);
         this.router.get('/get-info-espectaculos', appController_1.default.getInfoEspectaculos);
+        this.router.get('/get-video-prueba', appController_1.default.getVideoPrueba);
         this.router.get('/get-info-productor/:id', appController_1.default.getInfoProductor);
         this.router.get('/get-info-administrador', appController_1.default.getInfoAdministrador);
         //rutas de productos chile en caso que se necesite una refencia  
