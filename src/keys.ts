@@ -2,8 +2,8 @@ export default{
      database:{
 
           //datos de conexion a db
-
-          host:'190.107.177.34',
+ 
+          host:'productochile.cl',
           user:'producto_Felipe',  
           password:']wq-8xIFvf26',
           database:'producto_cultura',    
